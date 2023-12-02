@@ -1,20 +1,15 @@
-use std::str::Split;
+use std::str::Lines;
 
 fn main() {
     let input_raw = include_str!("input.txt");
-    let input = input_raw.trim().split('\n');
+    let input = input_raw.trim().lines();
 
     println!("Part 1: {}", part_1(&input));
     println!("Part 2: {}", part_2(&input));
 }
 
-fn part_1(input: &Split<char>) -> u32 {
-    input
-        .clone()
-        .map(|str| line_to_value_1(str))
-        .collect::<Vec<u32>>()
-        .into_iter()
-        .sum()
+fn part_1(input: &Lines) -> u32 {
+    input.clone().map(|str| line_to_value_1(str)).sum()
 }
 
 fn line_to_value_1(str: &str) -> u32 {
@@ -24,13 +19,8 @@ fn line_to_value_1(str: &str) -> u32 {
         .unwrap()
 }
 
-fn part_2(input: &Split<char>) -> u32 {
-    input
-        .clone()
-        .map(|str| line_to_value_2(str))
-        .collect::<Vec<u32>>()
-        .into_iter()
-        .sum()
+fn part_2(input: &Lines) -> u32 {
+    input.clone().map(|str| line_to_value_2(str)).sum()
 }
 
 fn line_to_value_2(str: &str) -> u32 {
