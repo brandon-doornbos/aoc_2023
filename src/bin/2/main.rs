@@ -38,7 +38,7 @@ fn parse_line_1(str: &str, lut: &HashMap<&str, i32>) -> Option<i32> {
 }
 
 fn part_2(input: &Lines) -> i32 {
-    input.clone().map(|str| parse_line_2(str)).sum::<i32>()
+    input.clone().map(parse_line_2).sum::<i32>()
 }
 
 fn parse_line_2(str: &str) -> i32 {

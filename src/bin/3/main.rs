@@ -12,7 +12,7 @@ fn main() {
 }
 
 fn is_symbol(c: char) -> bool {
-    !(c == '.' || c.is_digit(10))
+    !(c == '.' || c.is_ascii_digit())
 }
 
 fn part_1(input: &Vec<Vec<char>>) -> u32 {
@@ -26,7 +26,7 @@ fn part_1(input: &Vec<Vec<char>>) -> u32 {
         let mut valid = false;
 
         for j in 0..=x {
-            if input[i][j].is_digit(10) {
+            if input[i][j].is_ascii_digit() {
                 part_num *= 10;
                 part_num += input[i][j].to_digit(10).unwrap_or(0);
 
@@ -67,7 +67,7 @@ fn part_2(input: &Vec<Vec<char>>) -> u32 {
         let mut valid_gears = vec![];
 
         for j in 0..=x {
-            if input[i][j].is_digit(10) {
+            if input[i][j].is_ascii_digit() {
                 part_num *= 10;
                 part_num += input[i][j].to_digit(10).unwrap_or(0);
 
@@ -102,7 +102,7 @@ fn part_2(input: &Vec<Vec<char>>) -> u32 {
             }
 
             for gear in &valid_gears {
-                if let None = gears.get(gear) {
+                if gears.get(gear).is_none() {
                     gears.insert(*gear, vec![]);
                 }
                 if !gears.get(gear).unwrap().contains(&part_num) {
