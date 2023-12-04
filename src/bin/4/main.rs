@@ -1,7 +1,6 @@
 struct Card {
     id: usize,
-    have: Vec<i32>,
-    winning: Vec<i32>,
+    wins: usize,
 }
 
 fn main() {
@@ -17,12 +16,11 @@ fn main() {
 
 fn parse_line(line: &str) -> Card {
     let parts: Vec<&str> = line.split(':').collect();
-    let card: usize = parts[0].split_whitespace().collect::<Vec<&str>>()[1]
-        .parse::<usize>()
-        .unwrap()
-        - 1;
+    let id: usize = parts[0].split_whitespace().collect::<Vec<&str>>()[1]
+        .parse()
+        .unwrap();
 
-    let mut numbers: Vec<Vec<i32>> = parts[1]
+    let numbers: Vec<Vec<i32>> = parts[1]
         .split('|')
         .map(|str| {
             str.split_whitespace()
@@ -31,46 +29,33 @@ fn parse_line(line: &str) -> Card {
         })
         .collect();
 
-    Card {
-        id: card,
-        have: numbers.remove(1),
-        winning: numbers.remove(0),
-    }
+    let wins = numbers[1]
+        .iter()
+        .fold(0, |acc, n| acc + numbers[0].contains(n) as usize);
+
+    Card { id, wins }
 }
 
 fn part_1(input: &Vec<Card>) -> i32 {
     let mut total = 0;
 
     for card in input {
-        let mut points = 0;
-
-        for n in &card.have {
-            if card.winning.contains(n) {
-                if points == 0 {
-                    points = 1;
-                } else {
-                    points *= 2;
-                }
-            }
-        }
-
-        total += points;
+        total += if card.wins > 0 {
+            2_i32.pow((card.wins - 1).try_into().unwrap())
+        } else {
+            0
+        };
     }
 
     total
 }
 
-fn part_2(input: &Vec<Card>) -> usize {
+fn part_2(input: &Vec<Card>) -> i32 {
     let mut card_cache = vec![1; input.len()];
 
     for card in input {
-        let mut points: usize = 0;
-
-        for n in &card.have {
-            if card.winning.contains(n) {
-                points += 1;
-                card_cache[card.id + points] += card_cache[card.id];
-            }
+        for i in 0..card.wins {
+            card_cache[card.id + i] += card_cache[card.id - 1];
         }
     }
 
