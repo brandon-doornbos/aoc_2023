@@ -47,7 +47,7 @@ fn preprocess(input: &std::str::Lines) -> (Vec<i64>, Vec<Vec<Translation>>) {
                 source: translation[1],
                 length: translation[2],
             })
-        } else if line == "" {
+        } else if line.is_empty() {
             translations.push(vec![]);
         }
     }
@@ -66,8 +66,8 @@ fn process_translations_1(numbers: &mut Vec<i64>, translations: &Vec<Translation
     }
 }
 
-fn part_1(seeds: &Vec<i64>, translations: &Vec<Vec<Translation>>) -> i64 {
-    let mut results = seeds.clone();
+fn part_1(seeds: &[i64], translations: &Vec<Vec<Translation>>) -> i64 {
+    let mut results = seeds.to_owned();
     for layer in translations {
         process_translations_1(&mut results, layer);
     }
